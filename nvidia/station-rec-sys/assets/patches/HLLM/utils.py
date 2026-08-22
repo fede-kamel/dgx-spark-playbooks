@@ -8,21 +8,19 @@
 #
 # This modified file is released under the same license.
 
-import copy
 import importlib
-import os
-import pickle
+import math
+import random
+from functools import partial
 from logging import getLogger
+
+import numpy as np
+import torch
 from REC.data.dataset import *
 from REC.utils import set_color
-from functools import partial
+from torch.utils.data import DataLoader
+
 from .dataload import Data
-import torch
-from torch.utils.data import Dataset, DataLoader
-import numpy as np
-import random
-import math
-import copy
 
 
 def load_data(config):

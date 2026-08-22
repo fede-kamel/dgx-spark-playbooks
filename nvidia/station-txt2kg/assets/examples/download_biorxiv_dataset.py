@@ -20,10 +20,11 @@ Download and process the MTEB raw_biorxiv dataset for txt2kg demo.
 Filter for genetics/genomics categories and create individual txt files.
 """
 
-import os
 import re
 from pathlib import Path
+
 from datasets import load_dataset
+
 
 def sanitize_filename(text, max_length=100):
     """Convert text to a safe filename."""
@@ -94,7 +95,7 @@ def main():
     
     # Show some statistics
     categories_found = set(item['category'] for item in genetics_genomics_data)
-    print(f"\nCategories included:")
+    print("\nCategories included:")
     for cat in sorted(categories_found):
         count = sum(1 for item in genetics_genomics_data if item['category'] == cat)
         print(f"  - {cat}: {count} papers")

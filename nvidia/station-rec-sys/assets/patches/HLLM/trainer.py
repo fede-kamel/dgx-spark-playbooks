@@ -8,34 +8,40 @@
 #
 # This modified file is released under the same license.
 
+import math
 import os
 import sys
-import math
+import time as t
 from logging import getLogger
 from time import time
-import time as t
+
+import deepspeed
+import lightning as L
 import numpy as np
 import torch
-import torch.optim as optim
-import torch.distributed as dist
-from tqdm import tqdm
-import deepspeed
-from deepspeed.ops.adam import FusedAdam
-
-from REC.data.dataset import BatchTextDataset
-from REC.data.dataset.collate_fn import customize_rmpad_collate
-from torch.utils.data import DataLoader
-from REC.evaluator import Evaluator, Collector
-from REC.utils import ensure_dir, get_local_time, early_stopping, calculate_valid_score, dict2str, \
-    get_tensorboard, set_color, get_gpu_usage, WandbLogger
-from REC.utils.lr_scheduler import *
-
-import lightning as L
-from lightning.fabric.strategies import DeepSpeedStrategy, DDPStrategy
 
 # torch.compile: allow more recompiles for variable packed-sequence shapes
 # (HLLM's collate uses cu_input_lens → shapes differ per batch)
 import torch._dynamo
+import torch.optim as optim
+from deepspeed.ops.adam import FusedAdam
+from lightning.fabric.strategies import DDPStrategy, DeepSpeedStrategy
+from REC.data.dataset import BatchTextDataset
+from REC.data.dataset.collate_fn import customize_rmpad_collate
+from REC.evaluator import Collector, Evaluator
+from REC.utils import (
+    WandbLogger,
+    calculate_valid_score,
+    dict2str,
+    early_stopping,
+    ensure_dir,
+    get_tensorboard,
+    set_color,
+)
+from REC.utils.lr_scheduler import *
+from torch.utils.data import DataLoader
+from tqdm import tqdm
+
 torch._dynamo.config.cache_size_limit = 64
 torch._dynamo.config.capture_scalar_outputs = True  # trace through .item() calls (e.g. flash-attn max_seqlen)
 
@@ -117,7 +123,7 @@ class Trainer(object):
             self.logger.info(f"Use linear scheduler with {warmup_steps} warmup {tot_steps} total steps")
             return get_linear_schedule_with_warmup(self.optimizer, warmup_steps, tot_steps)
         else:
-            self.logger.info(f"Use constant scheduler")
+            self.logger.info("Use constant scheduler")
             return get_constant_schedule(self.optimizer)
 
     def _build_optimizer(self):
@@ -272,7 +278,8 @@ class Trainer(object):
                 # Keep only the latest N step checkpoints
                 max_keep = self.config.get('max_keep_checkpoints', 3)
                 if self.rank == 0 and max_keep > 0:
-                    import glob, shutil
+                    import glob
+                    import shutil
                     pattern = os.path.join(self.checkpoint_dir, '{}-*-step-*.pth'.format(self.config['model']))
                     existing = sorted(glob.glob(pattern), key=os.path.getmtime)
                     while len(existing) > max_keep:
@@ -554,7 +561,7 @@ class Trainer(object):
         nnodes = world_size // local_world_size
         precision = self.config['precision'] if self.config['precision'] else '32'
         if self.config['strategy'] == 'deepspeed':
-            self.logger.info(f"Use deepspeed strategy")
+            self.logger.info("Use deepspeed strategy")
             strategy = DeepSpeedStrategy(
                 stage=self.config["stage"],
                 precision=precision,
@@ -562,7 +569,7 @@ class Trainer(object):
             )
             self.lite = L.Fabric(accelerator='gpu', strategy=strategy, precision=precision, num_nodes=nnodes)
         else:
-            self.logger.info(f"Use DDP strategy")
+            self.logger.info("Use DDP strategy")
             strategy = DDPStrategy(find_unused_parameters=True)
             self.lite = L.Fabric(accelerator='gpu', strategy=strategy, precision=precision, num_nodes=nnodes)
         self.lite.launch()
@@ -721,7 +728,7 @@ class Trainer(object):
             world_size, local_world_size = int(os.environ['WORLD_SIZE']), int(os.environ['LOCAL_WORLD_SIZE'])
             nnodes = world_size // local_world_size
             if self.config['strategy'] == 'deepspeed':
-                self.logger.info(f"Use deepspeed strategy")
+                self.logger.info("Use deepspeed strategy")
                 precision = self.config['precision'] if self.config['precision'] else '32'
                 strategy = DeepSpeedStrategy(
                     stage=self.config['stage'],
@@ -732,7 +739,7 @@ class Trainer(object):
                 self.lite.launch()
                 self.model, self.optimizer = self.lite.setup(self.model, self.optimizer)
             else:
-                self.logger.info(f"Use DDP strategy")
+                self.logger.info("Use DDP strategy")
                 precision = self.config['precision'] if self.config['precision'] else '32'
                 strategy = DDPStrategy(find_unused_parameters=True)
                 self.lite = L.Fabric(accelerator='gpu', strategy=strategy, precision=precision, num_nodes=nnodes)
@@ -757,7 +764,7 @@ class Trainer(object):
                     eval_data,
                     total=len(eval_data),
                     ncols=150,
-                    desc=set_color(f"Evaluate   ", 'pink'),
+                    desc=set_color("Evaluate   ", 'pink'),
                     file=sys.stdout
                 ) if show_progress and self.rank == 0 else eval_data
             )

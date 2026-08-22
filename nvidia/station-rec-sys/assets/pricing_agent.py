@@ -685,7 +685,6 @@ class PricingEnv:
 
 def _build_actor_critic(n_actions: int, hidden: int = 256):
     """Return an ActorCritic torch module. Imported lazily."""
-    import torch
     import torch.nn as nn
 
     class ActorCritic(nn.Module):
@@ -1120,7 +1119,6 @@ def cmd_train(args: argparse.Namespace) -> int:
 
 
 def cmd_eval(args: argparse.Namespace) -> int:
-    import torch
 
     ckpt_path = model_dir() / "policy.pt"
     if not ckpt_path.exists():

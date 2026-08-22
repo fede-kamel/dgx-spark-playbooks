@@ -26,7 +26,6 @@ import pandas as pd
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
-
 from prepare_data import looks_non_dress
 
 
@@ -222,7 +221,9 @@ FINAL_TOP_K = 4        # items returned to the UI (top-4 gives recs more room be
 
 if USE_RERANKER:
     from train_reranker_lightgbm import (
-        FEATURE_COLS, build_user_samples, compute_item_stats, compute_user_stats,
+        FEATURE_COLS,
+        compute_item_stats,
+        compute_user_stats,
     )
 
     LGBM_PATH = MODELS_DIR / "reranker_lightgbm" / "reranker_lightgbm.txt"

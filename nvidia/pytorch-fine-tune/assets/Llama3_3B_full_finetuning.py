@@ -15,13 +15,12 @@
 # limitations under the License.
 #
 
-import torch
 import argparse
+
+import torch
 from datasets import load_dataset
-from trl import SFTConfig, SFTTrainer
 from transformers import AutoModelForCausalLM, AutoTokenizer
-
-
+from trl import SFTConfig, SFTTrainer
 
 # Define prompt templates
 ALPACA_PROMPT_TEMPLATE = """Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
@@ -166,7 +165,7 @@ if __name__ == "__main__":
     print("LLAMA 3.2 3B FULL FINE-TUNING CONFIGURATION")
     print(f"{'='*60}")
     print(f"Model: {args.model_name}")
-    print(f"Training mode: Full SFT ")
+    print("Training mode: Full SFT ")
     print(f"Batch size: {args.batch_size}")
     print(f"Gradient accumulation: {args.gradient_accumulation_steps}")
     print(f"Effective batch size: {args.batch_size * args.gradient_accumulation_steps}")

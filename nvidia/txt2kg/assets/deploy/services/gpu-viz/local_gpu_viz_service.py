@@ -14,19 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
 import json
-import numpy as np
-import pandas as pd
-from typing import Dict, List, Any, Optional, Tuple
-import asyncio
 import logging
 from datetime import datetime
+from typing import Any, Dict, List, Tuple
+
+import uvicorn
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
-import uvicorn
 
 # GPU-accelerated imports (available in NVIDIA PyG container)
 try:
@@ -39,7 +35,6 @@ try:
 except ImportError:
     HAS_RAPIDS = False
     print("⚠ RAPIDS not available, falling back to CPU")
-    import networkx as nx
 
 try:
     import torch
@@ -163,7 +158,7 @@ class GPUGraphProcessor:
                     betweenness[str(row['vertex'])] = float(row['betweenness_centrality'])
                 centrality_data['betweenness'] = betweenness
             
-            logger.info(f"Computed centrality measures on GPU")
+            logger.info("Computed centrality measures on GPU")
             return centrality_data
             
         except Exception as e:

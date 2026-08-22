@@ -14,9 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import jinja2
 from typing import Dict
 
+import jinja2
 
 SUPERVISOR_AGENT_STR = """
 You are a supervisor agent whose role is to be a helpful planner that can use tools to answer questions. Please be concise and to the point.

@@ -21,23 +21,24 @@ Groups nodes by semantic similarity of names, types, and content rather than jus
 
 import asyncio
 import logging
-import time
-from typing import Dict, List, Any, Tuple, Set, Optional
-from dataclasses import dataclass
-from collections import defaultdict
-import numpy as np
 import re
+import time
+from collections import defaultdict
+from dataclasses import dataclass
 from difflib import SequenceMatcher
+from typing import Any, Dict, List, Optional
+
+import numpy as np
+from sklearn.cluster import DBSCAN, AgglomerativeClustering, KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.cluster import KMeans, DBSCAN, AgglomerativeClustering
 from sklearn.metrics.pairwise import cosine_similarity
-import networkx as nx
 
 # Try to import GPU libraries
 try:
-    import cupy as cp
     import cuml
-    from cuml.cluster import KMeans as cuKMeans, DBSCAN as cuDBSCAN
+    import cupy as cp
+    from cuml.cluster import DBSCAN as cuDBSCAN
+    from cuml.cluster import KMeans as cuKMeans
     HAS_GPU = True
     print("✅ GPU libraries (CuPy, cuML) available for semantic clustering")
 except ImportError:

@@ -20,15 +20,16 @@ LLM Benchmark Script: vLLM vs Ollama Performance Comparison
 Compares performance metrics between vLLM and Ollama deployments
 """
 
-import asyncio
-import aiohttp
-import time
-import json
-import statistics
 import argparse
-from typing import List, Dict, Any
-from dataclasses import dataclass
+import asyncio
+import statistics
 import sys
+import time
+from dataclasses import dataclass
+from typing import Dict, List
+
+import aiohttp
+
 
 @dataclass
 class BenchmarkResult:

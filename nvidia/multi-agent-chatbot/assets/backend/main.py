@@ -29,14 +29,22 @@ import json
 import os
 import uuid
 from contextlib import asynccontextmanager
-from typing import List, Optional, Dict
-
-from fastapi import FastAPI, File, Form, UploadFile, HTTPException, BackgroundTasks, WebSocket, WebSocketDisconnect
-from fastapi.middleware.cors import CORSMiddleware
+from typing import Dict, List, Optional
 
 from agent import ChatAgent
 from config import ConfigManager
-from logger import logger, log_request, log_response, log_error
+from fastapi import (
+    BackgroundTasks,
+    FastAPI,
+    File,
+    Form,
+    HTTPException,
+    UploadFile,
+    WebSocket,
+    WebSocketDisconnect,
+)
+from fastapi.middleware.cors import CORSMiddleware
+from logger import log_error, log_request, log_response, logger
 from models import ChatIdRequest, ChatRenameRequest, SelectedModelRequest
 from postgres_storage import PostgreSQLConversationStorage
 from utils import process_and_ingest_files_background

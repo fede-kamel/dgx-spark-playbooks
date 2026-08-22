@@ -10,7 +10,11 @@ built-in drug-target table (drug name -> target protein -> amino acid sequence).
 Fetches drug SMILES from PubChem, predicts a protein-ligand complex with
 OpenFold3 NIM, and generates an interactive 3D viewer saved to canvas.
 """
-import argparse, subprocess, json, os, sys
+import argparse
+import json
+import os
+import subprocess
+import sys
 
 CANVAS = os.path.expanduser("~/.openclaw/canvas")
 OF3_HOST = os.environ.get("OPENFOLD3_HOST", "172.17.0.1")

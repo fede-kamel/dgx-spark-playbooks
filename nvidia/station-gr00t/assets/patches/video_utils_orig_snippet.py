@@ -9,7 +9,6 @@ import cv2
 import numpy as np
 import torchvision
 
-
 # Neither decord nor torchcodec is imported at module level:
 # - decord bundles its own FFmpeg shared libraries which conflict with torchcodec's,
 #   causing torchcodec to silently fail (see GitHub issue #423).

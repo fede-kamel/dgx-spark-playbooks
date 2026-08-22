@@ -15,8 +15,9 @@ Usage:
 
 import argparse
 import os
+
 import torch
-from torch.profiler import profile, ProfilerActivity, schedule
+from torch.profiler import ProfilerActivity, profile, schedule
 
 
 def _filter_profiler_table(table: str) -> str:
@@ -70,7 +71,7 @@ def main():
 
     # Load model
     print("Loading meta-llama/Llama-3.1-8B...")
-    from transformers import AutoModelForCausalLM, AutoConfig
+    from transformers import AutoModelForCausalLM
 
     model = AutoModelForCausalLM.from_pretrained(
         "meta-llama/Llama-3.1-8B",

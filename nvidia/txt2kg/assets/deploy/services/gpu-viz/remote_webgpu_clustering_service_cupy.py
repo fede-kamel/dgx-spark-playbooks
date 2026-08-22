@@ -22,24 +22,21 @@ Provides GPU-accelerated graph clustering using CuPy instead of cuDF to avoid se
 Uses stable CuPy operations for GPU clustering while maintaining the same API.
 """
 
-import os
-import json
-import uuid
-import asyncio
 import logging
-import numpy as np
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Tuple, Union
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect, BackgroundTasks
-from fastapi.responses import HTMLResponse, StreamingResponse
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import uvicorn
+import os
 import time
-import threading
+import uuid
 from concurrent.futures import ThreadPoolExecutor
-import base64
+from datetime import datetime
 from io import BytesIO
+from typing import Any, Dict, List, Optional, Tuple
+
+import numpy as np
+import uvicorn
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
 
 # GPU-accelerated imports
 try:
@@ -52,14 +49,13 @@ except ImportError:
 
 # Optional cuGraph for force simulation (avoid cuDF operations)
 try:
-    import cugraph
     import cudf
+    import cugraph
     HAS_CUGRAPH = True
     print("✓ cuGraph available for force simulation")
 except ImportError:
     HAS_CUGRAPH = False
     print("⚠ cuGraph not available")
-    import networkx as nx
 
 # WebRTC streaming imports
 try:
@@ -73,8 +69,8 @@ except ImportError:
 
 # WebGL rendering imports
 try:
-    import matplotlib.pyplot as plt
     import matplotlib
+    import matplotlib.pyplot as plt
     matplotlib.use('Agg')
     import plotly.graph_objects as go
     import plotly.io as pio

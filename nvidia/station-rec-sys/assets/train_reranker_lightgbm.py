@@ -395,7 +395,7 @@ def train(args: argparse.Namespace) -> dict:
     g_valid = np.full(len(valid_groups), rows_per_user, dtype=np.int64)
 
     # ------ Train ------
-    print(f'\n--- Training LightGBM lambdarank ---')
+    print('\n--- Training LightGBM lambdarank ---')
     print(f'  Train: {len(train_groups):,} users / {X_train.shape[0]:,} rows | '
           f'Valid: {len(valid_groups):,} users / {X_valid.shape[0]:,} rows')
 

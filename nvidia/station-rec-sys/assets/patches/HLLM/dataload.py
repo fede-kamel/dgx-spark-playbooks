@@ -9,16 +9,13 @@
 # This modified file is released under the same license.
 
 import copy
-import pickle
 import os
-import yaml
 from collections import Counter
 from logging import getLogger
 
 import numpy as np
 import pandas as pd
 import torch
-
 from REC.utils import set_color
 from REC.utils.enum_type import InputType
 from torch_geometric.utils import degree

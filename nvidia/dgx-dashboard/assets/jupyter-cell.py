@@ -15,11 +15,10 @@
 # limitations under the License.
 #
 
-from diffusers import DiffusionPipeline
 import torch
-from PIL import Image
-from datetime import datetime
+from diffusers import DiffusionPipeline
 from IPython.display import display
+from PIL import Image
 
 # --- Model setup ---
 MODEL_ID = "stabilityai/stable-diffusion-xl-base-1.0"
@@ -55,5 +54,5 @@ result = pipe(
 # --- Save to file ---
 image: Image.Image = result.images[0]
 display(image)
-image.save(f"sdxl_output.png")
-print(f"Saved image as sdxl_output.png")
+image.save("sdxl_output.png")
+print("Saved image as sdxl_output.png")

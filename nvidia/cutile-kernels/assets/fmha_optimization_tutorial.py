@@ -37,9 +37,8 @@ import argparse
 import json
 import math
 import time
-from dataclasses import dataclass, asdict
-from typing import List, Optional
-import sys
+from dataclasses import asdict, dataclass
+from typing import List
 
 import torch
 

@@ -34,9 +34,9 @@ import argparse
 import json
 import math
 import time
-from dataclasses import dataclass, asdict
-from typing import List
+from dataclasses import asdict, dataclass
 from types import SimpleNamespace
+from typing import List
 
 import torch
 
@@ -870,7 +870,7 @@ def export_results(results: List[SeqLenResult], output_dir: str):
     with open(log_path, 'w') as f:
         f.write('\n'.join(logger.logs))
     
-    logger.log(f"\nResults exported to:")
+    logger.log("\nResults exported to:")
     logger.log(f"  - {json_path}")
     logger.log(f"  - {md_path}")
     logger.log(f"  - {log_path}")

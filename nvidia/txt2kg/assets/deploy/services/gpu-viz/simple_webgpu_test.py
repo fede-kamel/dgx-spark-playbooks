@@ -20,12 +20,14 @@ Simple WebGPU clustering test service
 Minimal implementation to test basic functionality
 """
 
+import time
+from typing import Any, Dict, List, Optional
+
+import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import uvicorn
-from typing import Dict, List, Any, Optional
-import time
+
 
 # Simple data models
 class GraphData(BaseModel):

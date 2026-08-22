@@ -18,7 +18,8 @@
 # Using Three.js for GPU-accelerated visualization
 
 import json
-from typing import Dict, Any, List
+from typing import Any, Dict
+
 
 class WebGLGPUVisualizationService:
     """Enhanced remote GPU service with Three.js WebGL rendering"""

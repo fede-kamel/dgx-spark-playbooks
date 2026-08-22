@@ -5,7 +5,6 @@ and has usable patient data for the demo.
 Run: python scripts/test-fhir.py
 """
 
-import json
 import sys
 
 import requests

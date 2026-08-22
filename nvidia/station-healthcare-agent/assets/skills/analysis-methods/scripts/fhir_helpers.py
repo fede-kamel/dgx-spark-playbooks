@@ -8,11 +8,12 @@ Import this in analysis scripts:
 All HTTP calls use subprocess/curl (requests library does NOT work in sandbox).
 """
 
-import subprocess
 import json
 import os
-import pandas as pd
+import subprocess
 from urllib.parse import urlencode
+
+import pandas as pd
 
 BASE_URL = "https://r4.smarthealthit.org"
 CANVAS_DIR = os.path.expanduser("~/.openclaw/canvas")
@@ -261,7 +262,7 @@ def build_cohort_df(patient_ids, loinc_code, lab_name, drug_check_fn=None):
     """
     print(f"Fetching {lab_name} for {len(patient_ids)} patients (batched)...")
     labs = get_latest_labs_batch(loinc_code, patient_ids)
-    print(f"Fetching medications (batched)...")
+    print("Fetching medications (batched)...")
     meds_map = get_all_medications_batch(patient_ids)
 
     rows = []

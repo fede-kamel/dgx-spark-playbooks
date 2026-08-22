@@ -14,11 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from flask import Flask, request, jsonify
-from sentence_transformers import SentenceTransformer
+import logging
 import os
 import time
-import logging
+
+from flask import Flask, jsonify, request
+from sentence_transformers import SentenceTransformer
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

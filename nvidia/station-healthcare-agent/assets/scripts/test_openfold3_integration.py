@@ -15,9 +15,8 @@ import json
 import os
 import subprocess
 import sys
-import time
-import urllib.request
 import urllib.parse
+import urllib.request
 
 
 def _docker_bridge_ip():

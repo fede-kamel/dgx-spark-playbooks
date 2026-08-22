@@ -48,10 +48,11 @@ def _(mo):
 
 @app.cell
 def _():
-    import jax
-    import numpy as np
-    import jax.numpy as jnp
     from timeit import timeit
+
+    import jax
+    import jax.numpy as jnp
+    import numpy as np
     return jax, jnp, np, timeit
 
 

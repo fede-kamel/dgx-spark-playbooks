@@ -23,27 +23,24 @@ Uses stable CuPy operations for GPU clustering while maintaining the same API.
 Enhanced with semantic clustering based on node names and content similarity.
 """
 
-import os
-import json
-import uuid
-import asyncio
 import logging
-import numpy as np
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Tuple, Union
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect, BackgroundTasks
-from fastapi.responses import HTMLResponse, StreamingResponse
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import uvicorn
+import os
 import time
-import threading
+import uuid
 from concurrent.futures import ThreadPoolExecutor
-import base64
+from datetime import datetime
 from io import BytesIO
+from typing import Any, Dict, List, Optional, Tuple
+
+import numpy as np
+import uvicorn
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
 
 # Import semantic clustering
-from semantic_clustering_service import SemanticClusteringEngine, cluster_nodes_by_similarity
+from semantic_clustering_service import cluster_nodes_by_similarity
 
 # GPU-accelerated imports
 try:
@@ -56,14 +53,13 @@ except ImportError:
 
 # Optional cuGraph for force simulation (avoid cuDF operations)
 try:
-    import cugraph
     import cudf
+    import cugraph
     HAS_CUGRAPH = True
     print("✓ cuGraph available for force simulation")
 except ImportError:
     HAS_CUGRAPH = False
     print("⚠ cuGraph not available")
-    import networkx as nx
 
 # WebRTC streaming imports
 try:
@@ -77,8 +73,8 @@ except ImportError:
 
 # WebGL rendering imports
 try:
-    import matplotlib.pyplot as plt
     import matplotlib
+    import matplotlib.pyplot as plt
     matplotlib.use('Agg')
     import plotly.graph_objects as go
     import plotly.io as pio
@@ -153,8 +149,8 @@ class CuPyClusteringEngine:
             return self._cluster_nodes_cpu(nodes)
             
         try:
-            from cuml.cluster import KMeans, DBSCAN, HDBSCAN
             import cupy as cp
+            from cuml.cluster import KMeans
             
             start_time = time.time()
             
@@ -261,7 +257,6 @@ class CuPyClusteringEngine:
         3. Sample remaining nodes proportionally from each cluster
         4. Always keep noise points (outliers are important)
         """
-        import cupy as cp
         
         # Separate nodes by cluster
         cluster_groups = {}
@@ -290,7 +285,7 @@ class CuPyClusteringEngine:
             selected_nodes.extend(noise_nodes)
             print(f"   📍 Kept {len(noise_nodes)} noise points")
         else:
-            print(f"   📍 No noise points (KMeans clustering)")
+            print("   📍 No noise points (KMeans clustering)")
         
         # Process each cluster
         for cluster_id, cluster_nodes in cluster_groups.items():

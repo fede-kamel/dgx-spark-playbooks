@@ -15,13 +15,13 @@
 # limitations under the License.
 #
 
-import torch
 import argparse
-from datasets import load_dataset
-from trl import SFTConfig, SFTTrainer
-from transformers import AutoModelForCausalLM, AutoTokenizer
-from peft import get_peft_model, LoraConfig, TaskType
 
+import torch
+from datasets import load_dataset
+from peft import LoraConfig, TaskType, get_peft_model
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from trl import SFTConfig, SFTTrainer
 
 # Define prompt templates
 ALPACA_PROMPT_TEMPLATE = """Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.

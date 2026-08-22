@@ -14,22 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import graphistry
-import pandas as pd
-import numpy as np
-from typing import Dict, List, Any, Optional
 import asyncio
-import json
-from datetime import datetime
 import logging
-from fastapi import FastAPI, HTTPException, BackgroundTasks
-from pydantic import BaseModel
-import uvicorn
 import os
 import time
 from concurrent.futures import ThreadPoolExecutor
-import networkx as nx
+from datetime import datetime
 from enum import Enum
+from typing import Any, Dict, List, Optional
+
+import graphistry
+import networkx as nx
+import numpy as np
+import pandas as pd
+import uvicorn
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -385,7 +385,7 @@ class PyGraphistryService:
             # Create PyGraphistry graph object
             try:
                 g = graphistry.edges(edges_df, 'source', 'target').nodes(nodes_df, 'id')
-                logger.info(f"Created PyGraphistry graph object")
+                logger.info("Created PyGraphistry graph object")
             except Exception as e:
                 logger.error(f"Failed to create PyGraphistry graph: {e}")
                 raise HTTPException(status_code=500, detail=f"Graph creation failed: {e}")
@@ -481,7 +481,7 @@ class PyGraphistryService:
             except Exception as e:
                 logger.warning(f"✗ FAILED: UMAP processing failed: {e}")
                 
-            logger.info(f"=== GPU ACCELERATION SUMMARY ===")
+            logger.info("=== GPU ACCELERATION SUMMARY ===")
             logger.info(f"GPU operations successful: {gpu_operations_successful}/{total_gpu_operations}")
             logger.info(f"GPU utilization: {(gpu_operations_successful/total_gpu_operations)*100:.1f}%")
             

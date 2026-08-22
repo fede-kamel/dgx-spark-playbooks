@@ -16,12 +16,14 @@
 # limitations under the License.
 #
 
-import os
 import argparse
+import os
+
 import torch
 from torch_geometric import seed_everything
 from torch_geometric.loader import DataLoader
 from torch_geometric.nn import GAT, LLM, GRetriever
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train and export GNN model for service')
@@ -157,7 +159,6 @@ def save_model(model, save_path):
     print("Model saved successfully!")
 
 if __name__ == '__main__':
-    import math
     
     # Set seed for reproducibility
     seed_everything(50)

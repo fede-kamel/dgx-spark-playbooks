@@ -1,0 +1,41 @@
+---
+# yamllint config for the DGX Spark playbooks repo.
+# Playbook docs and docker-compose files use long lines and YAML 1.1
+# truthy values (on/off/yes/no), so the strict defaults are relaxed.
+extends: default
+
+rules:
+  # Playbook docs contain long command lines and URLs.
+  line-length:
+    max: 200
+    level: warning
+  # docker-compose and netplan files legitimately use on/off/yes/no.
+  truthy:
+    level: warning
+# Docs use blank lines between sections.
+  empty-lines:
+    max: 2
+    max-start: 1
+    max-end: 1
+# K8s policy files use {{ }} templating.
+  braces:
+    max-spaces-inside: 0
+    min-spaces-inside: 0
+    level: warning
+  # netplan files use spaced brackets for readability.
+  brackets:
+    max-spaces-inside: 1
+    min-spaces-inside: 0
+    level: warning
+  # Some generated files lack a trailing newline.
+  new-line-at-end-of-file:
+    level: warning
+  # Allow missing document start marker.
+  document-start:
+    present: false
+  # Trailing spaces are cosmetic in docs; keep as warning.
+  trailing-spaces:
+    level: warning
+  # Indentation is enforced but allow 4-space in docs.
+  indentation:
+    indent-sequences: whatever

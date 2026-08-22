@@ -16,8 +16,8 @@
 """Utility functions for portfolio optimization and data processing."""
 
 import os
+from typing import Union
 
-from typing import Optional, Union
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd

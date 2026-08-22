@@ -16,9 +16,10 @@
 # limitations under the License.
 #
 
-import requests
-import json
 import argparse
+
+import requests
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Client for GNN Model Service')

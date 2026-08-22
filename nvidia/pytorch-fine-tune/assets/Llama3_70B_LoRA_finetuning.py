@@ -15,14 +15,13 @@
 # limitations under the License.
 #
 
-import torch
 import argparse
-import os
-from datasets import load_dataset
-from trl import SFTConfig, SFTTrainer
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
-from peft import get_peft_model, LoraConfig, TaskType, prepare_model_for_kbit_training
 
+import torch
+from datasets import load_dataset
+from peft import LoraConfig, TaskType, get_peft_model
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from trl import SFTConfig, SFTTrainer
 
 # Define prompt templates
 ALPACA_PROMPT_TEMPLATE = """Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
@@ -48,7 +47,7 @@ def get_alpaca_dataset(eos_token, dataset_size=500):
 def main(args):
     # Load the model and tokenizer
     print(f"Loading model: {args.model_name}")
-    print(f"Training mode: LoRA")
+    print("Training mode: LoRA")
     
     
     # When using FSDP, don't use device_map to avoid loading full model on one device
@@ -207,7 +206,7 @@ if __name__ == "__main__":
     print("LLAMA 3.1 70B LoRA FINE-TUNING")
     print(f"{'='*60}")
     print(f"Model: {args.model_name}")
-    print(f"Training mode: LoRA")
+    print("Training mode: LoRA")
     print(f"Batch size: {args.batch_size}")
     print(f"Gradient accumulation: {args.gradient_accumulation_steps}")
     print(f"Effective batch size: {args.batch_size * args.gradient_accumulation_steps}")

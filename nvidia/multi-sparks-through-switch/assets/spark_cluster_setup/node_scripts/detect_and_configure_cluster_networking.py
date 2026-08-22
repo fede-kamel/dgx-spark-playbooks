@@ -18,12 +18,11 @@
 #
 
 import argparse
-import json
+import os
 import socket
 import struct
 import threading
 import time
-import os
 from collections import defaultdict
 
 # Interfaces used for DISCOVERY (L2 broadcasts)
@@ -360,7 +359,7 @@ Examples:
 def apply_netplan_yaml(netplan_yaml) -> bool:
     netplan_path = "/etc/netplan/40-cx7.yaml"
     try:
-        print(f"Applying netplan YAML")
+        print("Applying netplan YAML")
 
         with open(netplan_path, "w") as f:
             f.write(netplan_yaml)

@@ -17,9 +17,9 @@
 #
 
 import os
+
 import torch
-from flask import Flask, request, jsonify
-import torch_geometric
+from flask import Flask, jsonify, request
 from torch_geometric.nn import GAT, LLM, GRetriever
 
 app = Flask(__name__)

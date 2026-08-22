@@ -37,9 +37,11 @@ import lightgbm as lgb
 import numpy as np
 import pandas as pd
 import torch
-
 from train_reranker_lightgbm import (
-    FEATURE_COLS, build_user_samples, compute_item_stats, compute_user_stats,
+    FEATURE_COLS,
+    build_user_samples,
+    compute_item_stats,
+    compute_user_stats,
 )
 
 

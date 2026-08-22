@@ -12,6 +12,7 @@ Usage:
 """
 
 import argparse
+
 import torch
 from tabulate import tabulate
 
@@ -117,7 +118,7 @@ def benchmark_cross_entropy():
 
     gpu_name = torch.cuda.get_device_name(0)
     print(f"  GPU: {gpu_name}")
-    print(f"  Vocabulary size: 128,256 (LLaMA 3.1)\n")
+    print("  Vocabulary size: 128,256 (LLaMA 3.1)\n")
 
     vocab_size = 128256
     ref_ce = torch.nn.CrossEntropyLoss()

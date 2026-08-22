@@ -21,17 +21,18 @@ Realistic benchmark based on the txt2kg codebase use case
 Tests triple extraction from 512-character text chunks
 """
 
+import argparse
 import asyncio
-import aiohttp
-import time
 import json
 import statistics
-import argparse
 import subprocess
 import sys
-import os
-from typing import List, Dict, Any, Optional
+import time
 from dataclasses import dataclass
+from typing import Dict, List
+
+import aiohttp
+
 
 @dataclass
 class KGBenchmarkResult:
@@ -440,7 +441,7 @@ Separate each with a new line. Do not output anything else (no notes, no explana
         """Run knowledge graph extraction benchmark with services running one at a time"""
         print("🧠 Starting Knowledge Graph Extraction Benchmark")
         print(f"📊 Testing {len(text_chunks)} text chunks with {runs_per_chunk} runs each")
-        print(f"📝 Using realistic txt2kg prompts for triple extraction")
+        print("📝 Using realistic txt2kg prompts for triple extraction")
         
         all_results = {}
         
@@ -510,7 +511,7 @@ Separate each with a new line. Do not output anything else (no notes, no explana
             
             # Show sample extractions
             if valid_results:
-                print(f"\nSample triple extraction:")
+                print("\nSample triple extraction:")
                 sample_result = valid_results[0]
                 if sample_result.extracted_triples:
                     for i, triple in enumerate(sample_result.extracted_triples[:3]):

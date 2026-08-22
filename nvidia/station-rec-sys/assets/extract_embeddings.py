@@ -22,11 +22,10 @@ USAGE
   ... extract_embeddings.py --regression-eval
 """
 
+import argparse
 import os
 import sys
 import time
-import json
-import argparse
 from pathlib import Path
 
 import numpy as np
@@ -42,12 +41,11 @@ CHECKPOINTS_DIR = os.path.join(WORKSPACE, 'checkpoints')
 sys.path.insert(0, HLLM_CODE_DIR)
 
 import lightning as L
-from lightning.fabric.strategies import DeepSpeedStrategy, DDPStrategy
-
-from REC.data import load_data, bulid_dataloader
+from lightning.fabric.strategies import DDPStrategy, DeepSpeedStrategy
 from REC.config import Config
-from REC.utils import init_logger, get_model, init_seed, set_color
+from REC.data import bulid_dataloader, load_data
 from REC.trainer import Trainer
+from REC.utils import get_model, init_logger, init_seed
 
 # Config
 DATASET = 'amazon_dresses'

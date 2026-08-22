@@ -20,10 +20,11 @@ Download and process the marianna13/biorxiv dataset for txt2kg demo.
 Filter for Creative Commons licensed papers and create individual txt files.
 """
 
-import os
 import re
 from pathlib import Path
+
 from datasets import load_dataset
+
 
 def sanitize_filename(text, max_length=100):
     """Convert text to a safe filename."""
@@ -92,10 +93,10 @@ def main():
     years = [item['YEAR'] for item in cc_sample]
     year_range = f"{min(years)} - {max(years)}"
     
-    print(f"\nDataset Statistics:")
+    print("\nDataset Statistics:")
     print(f"  Year range: {year_range}")
-    print(f"  License: Creative Commons (commercial use allowed)")
-    print(f"  Content: Full paper text (not just abstracts)")
+    print("  License: Creative Commons (commercial use allowed)")
+    print("  Content: Full paper text (not just abstracts)")
     print(f"  Average text length: {sum(len(item['TEXT']) for item in cc_sample) // len(cc_sample):,} characters")
 
 if __name__ == "__main__":

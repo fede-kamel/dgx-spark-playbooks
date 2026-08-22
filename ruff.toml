@@ -1,0 +1,35 @@
+line-length = 100
+target-version = "py310"
+
+# spark_cluster_setup.py uses Python 3.12 f-string syntax (PEP 701) which is
+# invalid on the repo's py310 target. It requires Python 3.12+ to run; excluded
+# from lint until it is either rewritten for 3.10 or the repo target is bumped.
+extend-exclude = [
+    "nvidia/multi-sparks-through-switch/assets/spark_cluster_setup/spark_cluster_setup.py",
+]
+
+[lint]
+select = ["E4", "E7", "E9", "F", "I"]
+ignore = []
+
+# Example/notebook scripts and GPU-viz services intentionally use
+# sys.path manipulation, side-effect imports (cupy/cuml/torch availability
+# checks), bare excepts, and star imports. These are playbook examples, not
+# library code, so the patterns are allowed per-file.
+[lint.per-file-ignores]
+"nvidia/station-topic-modeling/assets/topic_modeling_app.py" = ["E402", "F401", "E722", "F841"]
+"nvidia/txt2kg/assets/deploy/services/gpu-viz/*.py" = ["E402", "F401", "E722", "F841"]
+"nvidia/station-txt2kg/assets/deploy/services/gpu-viz/*.py" = ["E402", "F401", "E722", "F841"]
+"nvidia/station-rec-sys/assets/patches/HLLM/*.py" = ["E402", "F401", "E722", "F841", "F403", "F405", "E711", "E712"]
+"nvidia/station-rec-sys/assets/*.py" = ["E402", "F401", "E722", "F841"]
+"nvidia/txt2kg/assets/scripts/*.py" = ["E402", "F401", "E722", "F841"]
+"nvidia/station-txt2kg/assets/scripts/*.py" = ["E402", "F401", "E722", "F841"]
+"nvidia/multi-agent-chatbot/assets/backend/tools/mcp_servers/*.py" = ["E402", "F401", "E722", "F841"]
+"nvidia/multi-agent-chatbot/assets/backend/*.py" = ["E402", "F401", "E722", "F841"]
+"nvidia/jax/assets/*.py" = ["E402", "F401", "E722", "F841"]
+"nvidia/cutile-kernels/assets/*.py" = ["E402", "F401", "E722", "F841", "E731"]
+"nvidia/station-kernel-dev-ft/assets/*.py" = ["E402", "F401", "E722", "F841", "E741"]
+"nvidia/portfolio-optimization/assets/setup/src/__init__.py" = ["F401", "E402"]
+"nvidia/station-comfyui/assets/scripts/*.py" = ["E402", "F401", "E722", "E741"]
+"nvidia/single-cell/assets/*.ipynb" = ["E402", "F401", "E722", "F821"]
+"nvidia/pytorch-fine-tune/assets/*.py" = ["E402", "F401", "E722", "F841"]

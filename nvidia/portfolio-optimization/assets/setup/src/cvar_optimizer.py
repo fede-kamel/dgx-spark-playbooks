@@ -31,8 +31,7 @@ from cuopt.linear_programming.problem import (
 )
 from cuopt.linear_programming.solver_settings import SolverSettings
 
-from . import base_optimizer
-from . import cvar_utils
+from . import base_optimizer, cvar_utils
 from .cvar_parameters import CvarParameters
 from .portfolio import Portfolio
 

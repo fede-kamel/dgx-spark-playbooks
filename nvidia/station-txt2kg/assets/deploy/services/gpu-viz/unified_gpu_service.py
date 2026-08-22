@@ -22,25 +22,22 @@ Combines PyGraphistry cloud processing and local GPU processing with cuGraph
 into a single FastAPI service for maximum flexibility.
 """
 
-import os
 import json
-import numpy as np
-import pandas as pd
-from typing import Dict, List, Any, Optional, Tuple
-import asyncio
 import logging
-from datetime import datetime
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect, BackgroundTasks
-from fastapi.responses import HTMLResponse
-from pydantic import BaseModel
-import uvicorn
+import os
 import time
 from concurrent.futures import ThreadPoolExecutor
-import networkx as nx
+from datetime import datetime
 from enum import Enum
+from typing import Any, Dict, List, Optional, Tuple
 
 # PyGraphistry imports
 import graphistry
+import pandas as pd
+import uvicorn
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi.responses import HTMLResponse
+from pydantic import BaseModel
 
 # GPU-accelerated imports (available in NVIDIA PyG container)
 try:
@@ -117,7 +114,8 @@ class GraphGenerationStatus(BaseModel):
     error: Optional[str] = None
 
 # Import graph generation classes (keeping existing code)
-from pygraphistry_service import LargeGraphGenerator, init_graphistry
+from pygraphistry_service import init_graphistry
+
 
 class LocalGPUProcessor:
     """GPU-accelerated graph processing using cuGraph"""
@@ -216,7 +214,7 @@ class LocalGPUProcessor:
                     betweenness[str(row['vertex'])] = float(row['betweenness_centrality'])
                 centrality_data['betweenness'] = betweenness
             
-            logger.info(f"Computed centrality measures on GPU")
+            logger.info("Computed centrality measures on GPU")
             return centrality_data
             
         except Exception as e:

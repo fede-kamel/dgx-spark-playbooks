@@ -22,17 +22,17 @@ Provides local GPU processing (cuGraph) with CPU fallback.
 """
 
 import json
-import numpy as np
-from typing import Dict, List, Any, Optional, Tuple
 import logging
+import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
+from enum import Enum
+from typing import Any, Dict, List, Optional, Tuple
+
+import uvicorn
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
-import uvicorn
-import time
-from concurrent.futures import ThreadPoolExecutor
-from enum import Enum
 
 # GPU-accelerated imports (available in NVIDIA PyG container)
 try:
@@ -199,7 +199,7 @@ class LocalGPUProcessor:
                     betweenness[str(row['vertex'])] = float(row['betweenness_centrality'])
                 centrality_data['betweenness'] = betweenness
             
-            logger.info(f"Computed centrality measures on GPU")
+            logger.info("Computed centrality measures on GPU")
             return centrality_data
             
         except Exception as e:

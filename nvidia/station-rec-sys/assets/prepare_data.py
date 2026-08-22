@@ -10,11 +10,9 @@ import json
 import os
 import re
 import time
-import sys
 from pathlib import Path
 
 import pandas as pd
-import numpy as np
 
 # A loose `'dress' in title` substring filter admits "dress shoes", "dress
 # pants", "dressy belts", etc. This regex pair was chosen by inspecting the
@@ -137,7 +135,7 @@ def find_dress_items(meta_path):
 
 def load_dress_reviews(reviews_path, dress_item_ids):
     """Load only reviews for dress items."""
-    print(f"Loading dress reviews...")
+    print("Loading dress reviews...")
     rows = []
     t0 = time.time()
     total = 0
@@ -162,7 +160,7 @@ def load_dress_reviews(reviews_path, dress_item_ids):
 
 def five_core_filter(df, min_count=5):
     """Iteratively filter users and items with < min_count interactions."""
-    print(f"5-core filtering...")
+    print("5-core filtering...")
     print(f"  Before: {len(df):,} interactions, {df['user_id'].nunique():,} users, {df['item_id'].nunique():,} items")
 
     prev_len = 0
@@ -220,7 +218,7 @@ def main():
 
     # Stats
     print(f"\n{'='*60}")
-    print(f"FINAL DRESSES DATASET:")
+    print("FINAL DRESSES DATASET:")
     print(f"  Interactions: {len(interactions):,}")
     print(f"  Users: {interactions['user_id'].nunique():,}")
     print(f"  Items: {interactions['item_id'].nunique():,}")

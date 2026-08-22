@@ -23,21 +23,19 @@ renders interactive visualizations, and serves them via iframe embeds.
 This provides an alternative to PyGraphistry cloud for large-scale visualization.
 """
 
-import os
 import json
-import uuid
-import asyncio
 import logging
+import os
+import uuid
 from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Tuple
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect, BackgroundTasks, Request
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, FileResponse
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import uvicorn
+from typing import Any, Dict, List, Optional, Tuple
+
 import redis
-from pathlib import Path
+import uvicorn
+from fastapi import BackgroundTasks, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
+from pydantic import BaseModel
 
 # GPU-accelerated imports
 try:
@@ -50,7 +48,6 @@ try:
 except ImportError:
     HAS_RAPIDS = False
     print("⚠ RAPIDS not available, falling back to CPU for remote rendering")
-    import networkx as nx
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

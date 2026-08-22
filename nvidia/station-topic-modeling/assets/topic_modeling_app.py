@@ -12,9 +12,11 @@ from __future__ import annotations
 
 # ── GPU accel must be installed BEFORE umap/hdbscan/pandas imports ───────────
 import cuml.accel
+
 cuml.accel.install()
 
 import cudf.pandas
+
 cudf.pandas.install()
 
 import copy

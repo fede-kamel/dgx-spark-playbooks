@@ -21,10 +21,8 @@ multiple Model Context Protocol (MCP) servers. It handles server configuration,
 initialization, and tool retrieval across different server types.
 """
 
-from typing import List, Optional
 
 from langchain_mcp_adapters.client import MultiServerMCPClient
-from mcp.types import Tool
 
 
 class MCPClient:

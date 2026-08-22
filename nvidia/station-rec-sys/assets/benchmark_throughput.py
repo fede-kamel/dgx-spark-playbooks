@@ -10,7 +10,6 @@ Usage:
 
 import argparse
 import asyncio
-import json
 import statistics
 import time
 
@@ -70,7 +69,7 @@ def print_results(results, wall_time, concurrency, total_requests):
     server_latencies = [r['server_latency_ms'] for r in successful if r.get('server_latency_ms')]
 
     print(f"\n{'='*60}")
-    print(f"THROUGHPUT BENCHMARK RESULTS")
+    print("THROUGHPUT BENCHMARK RESULTS")
     print(f"{'='*60}")
     print(f"Concurrency:     {concurrency}")
     print(f"Total requests:  {total_requests}")
@@ -81,7 +80,7 @@ def print_results(results, wall_time, concurrency, total_requests):
 
     if latencies:
         latencies.sort()
-        print(f"\nClient-side latency (includes network):")
+        print("\nClient-side latency (includes network):")
         print(f"  Min:    {min(latencies):.1f}ms")
         print(f"  p50:    {latencies[len(latencies)//2]:.1f}ms")
         print(f"  p95:    {latencies[int(len(latencies)*0.95)]:.1f}ms")
@@ -91,7 +90,7 @@ def print_results(results, wall_time, concurrency, total_requests):
 
     if server_latencies:
         server_latencies.sort()
-        print(f"\nServer-side latency (recommendation only):")
+        print("\nServer-side latency (recommendation only):")
         print(f"  Min:    {min(server_latencies):.0f}ms")
         print(f"  p50:    {server_latencies[len(server_latencies)//2]:.0f}ms")
         print(f"  p95:    {server_latencies[int(len(server_latencies)*0.95)]:.0f}ms")
@@ -147,7 +146,7 @@ async def main():
 
         # Summary table
         print(f"\n{'='*60}")
-        print(f"SWEEP SUMMARY")
+        print("SWEEP SUMMARY")
         print(f"{'='*60}")
         print(f"{'Concurrency':>12} {'Throughput':>12} {'p50 (ms)':>10} {'p95 (ms)':>10} {'p99 (ms)':>10}")
         print(f"{'-'*60}")

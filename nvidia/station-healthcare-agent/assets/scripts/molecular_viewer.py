@@ -28,8 +28,8 @@ import requests
 
 try:
     import dash
-    from dash import html
     import py3Dmol
+    from dash import html
 except ImportError as e:
     print("Missing dependency for viewer:", e, file=sys.stderr)
     print("Install: pip install dash py3Dmol", file=sys.stderr)

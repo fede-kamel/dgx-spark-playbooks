@@ -21,30 +21,24 @@ MCP server providing image understanding and analysis tools.
 This server exposes a `process_image` tool that uses a vision language model to answer queries about images. 
 It supports multiple image input formats including URLs, file paths, and base64-encoded images.
 """
-import asyncio
 import base64
 import os
-import requests
 import sys
 from pathlib import Path
-import time
 
-from langchain_core.tools import tool, Tool
-from langchain_mcp_adapters.tools import to_fastmcp
 from mcp.server.fastmcp import FastMCP
-from openai import AsyncOpenAI, OpenAI
+from openai import OpenAI
 
 project_root = Path(__file__).parent.parent.parent
 sys.path.append(str(project_root))
 from postgres_storage import PostgreSQLConversationStorage
-
 
 mcp = FastMCP("image-understanding-server")
 
 
 model_name = "Qwen2.5-VL-7B-Instruct"
 model_client = OpenAI(
-    base_url=f"http://qwen2.5-vl:8000/v1",
+    base_url="http://qwen2.5-vl:8000/v1",
     api_key="api_key"
 )
 POSTGRES_HOST = os.getenv("POSTGRES_HOST", "postgres")
@@ -113,7 +107,7 @@ def explain_image(query: str, image: str):
             max_tokens=512,
             temperature=0.1
         )
-        print(f"Received response from vision model")
+        print("Received response from vision model")
         return response.choices[0].message.content
     except Exception as e:
         print(f"Error calling vision model: {e}")

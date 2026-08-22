@@ -38,13 +38,8 @@ Usage:
     Run as standalone script to start the MCP server:
     $ python weather_test.py
 """
-import time
-import os
 
-from langchain_core.tools import tool, Tool
-from langchain_mcp_adapters.tools import to_fastmcp
 from mcp.server.fastmcp import FastMCP
-
 
 mcp = FastMCP("weather-tools")
 

@@ -15,18 +15,15 @@
 # limitations under the License.
 #
 import glob
-from typing import List, Tuple
 import os
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_milvus import Milvus
-from langchain_core.documents import Document
-from typing_extensions import List
-from langchain_openai import OpenAIEmbeddings
-from langchain_unstructured import UnstructuredLoader
-from dotenv import load_dotenv
-from logger import logger
-from typing import Optional, Callable
+from typing import Callable, List, Optional
+
 import requests
+from langchain_core.documents import Document
+from langchain_milvus import Milvus
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_unstructured import UnstructuredLoader
+from logger import logger
 
 
 class CustomEmbeddings:
@@ -143,8 +140,8 @@ class VectorStore:
                         loader = UnstructuredLoader(file_path)
                         docs = loader.load()
                         logger.info(f"Successfully loaded {len(docs)} documents from {file_path}")
-                    except Exception as pdf_error:
-                        logger.error(f'error with unstructured loader, trying to load from scratch')
+                    except Exception:
+                        logger.error('error with unstructured loader, trying to load from scratch')
                         file_text = None
                         if file_ext == ".pdf":
                             logger.info("Attempting PyPDF text extraction fallback")
@@ -333,7 +330,7 @@ class VectorStore:
             bool: True if successful, False otherwise
         """
         try:
-            from pymilvus import connections, Collection, utility
+            from pymilvus import Collection, connections, utility
             
             connections.connect(uri=self.uri)
             

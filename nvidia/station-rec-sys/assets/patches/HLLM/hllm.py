@@ -11,25 +11,24 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import torch
-from torch import nn
-import torch.nn.functional as F
-import torch.distributed as dist
-import numpy as np
-import transformers
-from transformers import AutoConfig, AutoModelForCausalLM
 from logging import getLogger
 
-from REC.utils.enum_type import InputType
+import numpy as np
+import torch
+import torch._dynamo
+import torch.nn.functional as F
+import transformers
 from REC.model.basemodel import BaseModel, all_gather
 from REC.model.HLLM.modeling_llama import LlamaForCausalLM
+from REC.utils.enum_type import InputType
+from torch import nn
+from transformers import AutoConfig, AutoModelForCausalLM
 
-import torch._dynamo
 # Treat nn.Module int attrs (e.g. layer_idx) as dynamic so 40 transformer layers share one compiled graph instead of recompiling per layer.
 torch._dynamo.config.allow_unspec_int_on_nn_module = True
-from REC.model.HLLM.modeling_mistral import MistralForCausalLM
-from REC.model.HLLM.modeling_bert import BertModel
 from REC.model.HLLM.baichuan.modeling_baichuan import BaichuanForCausalLM
+from REC.model.HLLM.modeling_bert import BertModel
+from REC.model.HLLM.modeling_mistral import MistralForCausalLM
 
 try:
     from peft import LoraConfig, inject_adapter_in_model
@@ -49,9 +48,9 @@ class HLLM(BaseModel):
         self.user_pretrain_dir = config['user_pretrain_dir']
         self.gradient_checkpointing = config['gradient_checkpointing']
         self.use_ft_flash_attn = config['use_ft_flash_attn']
-        self.logger.info(f"create item llm")
+        self.logger.info("create item llm")
         self.item_llm = self.create_llm(self.item_pretrain_dir, config['item_llm_init'])
-        self.logger.info(f"create user llm")
+        self.logger.info("create user llm")
         self.user_llm = self.create_llm(self.user_pretrain_dir, config['user_llm_init'])
 
         # Apply LoRA if configured
@@ -102,7 +101,7 @@ class HLLM(BaseModel):
             self.num_negatives = config['num_negatives']
             self.logger.info(f"nce thres setting to {self.nce_thres}")
         else:
-            raise NotImplementedError(f"Only nce is supported")
+            raise NotImplementedError("Only nce is supported")
 
         if config['load_pretrain']:
             state_dict = torch.load(config['load_pretrain'], map_location="cpu")
@@ -167,7 +166,7 @@ class HLLM(BaseModel):
             # HLLM reads only hidden_states; skip LM head to avoid materializing [tokens, vocab] logits (~8 GB for Qwen3).
             if hasattr(model, "lm_head") and not isinstance(model.lm_head, nn.Identity):
                 model.lm_head = nn.Identity()
-                self.logger.info(f"Replaced lm_head with Identity (skip logit materialization)")
+                self.logger.info("Replaced lm_head with Identity (skip logit materialization)")
             self.logger.info(
                 f"Loaded {pretrain_dir} — attn_implementation="
                 f"{model.config._attn_implementation}"

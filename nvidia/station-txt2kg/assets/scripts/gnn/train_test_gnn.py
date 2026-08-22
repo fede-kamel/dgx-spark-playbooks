@@ -18,16 +18,15 @@
 
 import argparse
 import os
+
 import torch
-from tqdm import tqdm
 from torch.nn.utils import clip_grad_norm_
 
 # Import the necessary modules from PyTorch Geometric
 from torch_geometric import seed_everything
 from torch_geometric.loader import DataLoader
-from torch_geometric.nn import (
-    GAT, LLM, GRetriever, LLMJudge
-)
+from torch_geometric.nn import GAT, LLM, GRetriever, LLMJudge
+from tqdm import tqdm
 
 # Define constants for better readability
 NV_NIM_MODEL_DEFAULT = "nvidia/llama-3.1-nemotron-70b-instruct"

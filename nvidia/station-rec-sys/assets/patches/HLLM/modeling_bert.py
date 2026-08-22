@@ -28,7 +28,6 @@ import torch
 import torch.utils.checkpoint
 from torch import nn
 from torch.nn import BCEWithLogitsLoss, CrossEntropyLoss, MSELoss
-
 from transformers.activations import ACT2FN
 from transformers.modeling_outputs import (
     BaseModelOutputWithPastAndCrossAttentions,
@@ -58,6 +57,7 @@ def find_pruneable_heads_and_indices(heads, n_heads, head_size, already_pruned_h
     mask = mask.view(-1).contiguous().eq(1)
     index = torch.arange(len(mask))[mask].long()
     return heads, index
+from transformers.configuration_utils import PretrainedConfig
 from transformers.utils import (
     ModelOutput,
     add_code_sample_docstrings,
@@ -66,11 +66,10 @@ from transformers.utils import (
     logging,
     replace_return_docstrings,
 )
-from transformers.configuration_utils import PretrainedConfig
 
 try:
     from .flash_self_attn import compute_flash_attention
-except ImportError as e:
+except ImportError:
     compute_flash_attention = None
 
 

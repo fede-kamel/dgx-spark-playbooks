@@ -15,10 +15,10 @@
 # limitations under the License.
 #
 
-from unsloth import FastLanguageModel, FastModel
-import torch
-from trl import SFTTrainer, SFTConfig
 from datasets import load_dataset
+from trl import SFTConfig, SFTTrainer
+from unsloth import FastLanguageModel, FastModel
+
 max_seq_length = 2048 # Supports RoPE Scaling internally, so choose any!
 # Get LAION dataset
 url = "https://huggingface.co/datasets/laion/OIG/resolve/main/unified_chip2.jsonl"

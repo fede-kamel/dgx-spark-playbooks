@@ -17,19 +17,21 @@
 # limitations under the License.
 #
 
-import logging
-import paramiko
 import argparse
-import time
 import json
-from scp import SCPClient
-import threading
-import sys
-from pathlib import Path
+import logging
 import os
-import subprocess
 import re
-from ipaddress import ip_address as ip_addr_obj, ip_network
+import subprocess
+import sys
+import threading
+import time
+from ipaddress import ip_address as ip_addr_obj
+from ipaddress import ip_network
+from pathlib import Path
+
+import paramiko
+from scp import SCPClient
 
 logging.getLogger("paramiko").setLevel(logging.CRITICAL)
 logging.getLogger("paramiko.transport").setLevel(logging.CRITICAL)
@@ -241,9 +243,9 @@ def run_nccl_test(nodes_info, ring_topology):
             print(f"An error occurred when running NCCL setup on nodes:\n{e}")
             return False
 
-    print(f"Successfully setup NCCL dependencies on all nodes...")
+    print("Successfully setup NCCL dependencies on all nodes...")
 
-    print(f"Running NCCL test...")
+    print("Running NCCL test...")
     
     # Generate the mpirun command
     host_list = ",".join(f"{node['ip_address']}:1" for node in nodes_info)
@@ -293,7 +295,7 @@ def run_nccl_test(nodes_info, ring_topology):
         if (ring_topology and avg_bus_bw < MIN_NCCL_TEST_BW_RING) or (not ring_topology and avg_bus_bw < MIN_NCCL_TEST_BW):
             print("WARNING: NCCL Test bandwidth is less than expected. Stop any GPU workloads on the nodes and try NCCL test again using the NCCL test command above.")
         else:
-            print(f"NCCL test BW is as expected")
+            print("NCCL test BW is as expected")
 
     close_ssh_session(ssh)
     return True
@@ -601,7 +603,7 @@ def verify_ip_addresses(nodes_info, up_interfaces) -> bool:
 
             close_ssh_session(ssh)
 
-        print(f"Running cluster connectivity test...")
+        print("Running cluster connectivity test...")
 
         for node in nodes_info:
             # Run mesh ping test between all nodes in the cluster
@@ -623,7 +625,7 @@ def verify_ip_addresses(nodes_info, up_interfaces) -> bool:
 
             close_ssh_session(ssh)
 
-        print(f"Cluster connectivity test completed successfully.")
+        print("Cluster connectivity test completed successfully.")
 
     except Exception as e:
         close_ssh_session(ssh)
@@ -660,13 +662,13 @@ def pre_validate_cluster(config) -> tuple[bool, bool, list[str]]:
             print("ERROR: Nodes information not found.")
             return False, False, []
 
-        print(f"Checking UP CX7 interfaces...")
+        print("Checking UP CX7 interfaces...")
         up_interfaces = check_and_get_up_cx7_interfaces(nodes_info)
         if not up_interfaces:
             print("ERROR: Failed to check UP CX7 interfaces. Check the QSFP cable connection and try again.")
             return False, False, []
 
-        print(f"Checking CX7 interface link speed...")
+        print("Checking CX7 interface link speed...")
         if not check_interface_link_speed(nodes_info, up_interfaces):
             return False, False, []
 
@@ -686,12 +688,12 @@ def handle_cluster_setup(config, up_interfaces) -> bool:
             print("ERROR: Nodes information not found.")
             return False
 
-        print(f"Copying network setup scripts on nodes...")
+        print("Copying network setup scripts on nodes...")
         # Copy the detect_and_configure_cluster_networking.py script to the nodes and run it in threads
         if not copy_network_setup_script_to_nodes(nodes_info):
             return False
 
-        print(f"Running network setup scripts on nodes...")
+        print("Running network setup scripts on nodes...")
         if not run_network_setup_scripts_on_nodes(nodes_info):
             print("ERROR: Failed to run network setup scripts on nodes. Check the QSFP cable connections and the nodes config in the json file and try again.")
             return False
@@ -743,7 +745,7 @@ def validate_config(config):
     else:
         ip_addresses = result.stdout.strip().split("\n")
 
-    print(f"Checking connectivity and permissions...")
+    print("Checking connectivity and permissions...")
     nodes_valid = True
     current_node_in_cluster = False
     for node in config.get("nodes_info", []):
@@ -861,16 +863,16 @@ def main():
 
     try:
         # Validate env
-        print(f"Validating environment...")
+        print("Validating environment...")
         if not validate_environment():
             return
 
         # Validate the config
-        print(f"Validating configuration...")
+        print("Validating configuration...")
         if not validate_config(config):
             return
 
-        print(f"Pre-validating cluster setup...")
+        print("Pre-validating cluster setup...")
         ret, ring_topology, up_interfaces = pre_validate_cluster(config)
         if not ret:
             return

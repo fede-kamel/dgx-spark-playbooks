@@ -20,14 +20,15 @@ import argparse
 import gc
 import json
 import os
-import torch
 from glob import glob
 from itertools import chain
-from tqdm import tqdm
+
+import torch
 from python_arango import ArangoClient
 
 # Import the necessary modules from PyTorch Geometric
 from torch_geometric import seed_everything
+from torch_geometric.loader import RAGQueryLoader
 from torch_geometric.nn import SentenceTransformer
 from torch_geometric.utils.rag.backend_utils import (
     create_remote_backend_from_triplets,
@@ -36,7 +37,7 @@ from torch_geometric.utils.rag.backend_utils import (
 )
 from torch_geometric.utils.rag.feature_store import ModernBertFeatureStore
 from torch_geometric.utils.rag.graph_store import NeighborSamplingRAGGraphStore
-from torch_geometric.loader import RAGQueryLoader
+from tqdm import tqdm
 
 # Define constants for better readability
 NV_NIM_MODEL_DEFAULT = "nvidia/llama-3.1-nemotron-70b-instruct"

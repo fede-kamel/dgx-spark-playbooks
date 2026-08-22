@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ruff:
+    name: ruff (lint)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install ruff
+        run: pip install ruff
+      - name: Ruff check
+        run: ruff check .
+
+  yamllint:
+    name: yamllint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install yamllint
+        run: pip install yamllint
+      - name: Lint YAML
+        run: yamllint -c .yamllint .
+
+  shellcheck:
+    name: shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Shellcheck (errors only)
+        run: |
+          mapfile -t scripts < <(find . -name '*.sh' -not -path './.git/*')
+          shellcheck --severity=error "${scripts[@]}"
+
+  tsc:
+    name: tsc (txt2kg frontend, report only)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install deps
+        working-directory: nvidia/txt2kg/assets/frontend
+        run: npm install --legacy-peer-deps
+      - name: Typecheck
+        working-directory: nvidia/txt2kg/assets/frontend
+        run: npx tsc --noEmit || true
+
+  mypy:
+    name: mypy (report only)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install mypy
+        run: pip install mypy
+      - name: Typecheck backend
+        run: |
+          mypy --ignore-missing-imports --follow-imports=skip \
+            nvidia/multi-agent-chatbot/assets/backend/ || true

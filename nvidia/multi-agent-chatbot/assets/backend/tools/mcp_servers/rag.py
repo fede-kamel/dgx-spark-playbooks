@@ -25,29 +25,24 @@ The simplified RAG workflow consists of:
     - Document retrieval from a vector store
     - Answer generation using retrieved context
 """
-import asyncio
-import json
 import logging
 import os
 import sys
 import time
 from pathlib import Path
-from typing import Any, Annotated, Dict, List, Optional, Sequence, TypedDict
+from typing import Annotated, Dict, List, Optional, Sequence, TypedDict
 
 from langchain_core.documents import Document
-from langchain_core.messages import AnyMessage, HumanMessage, AIMessage
-from langgraph.checkpoint.memory import MemorySaver
-from langgraph.graph import END, START, StateGraph, add_messages
+from langchain_core.messages import AIMessage, AnyMessage, HumanMessage
+from langgraph.graph import END, StateGraph, add_messages
 from mcp.server.fastmcp import FastMCP
 from openai import AsyncOpenAI
-from pypdf import PdfReader
 
 project_root = Path(__file__).parent.parent.parent
 sys.path.append(str(project_root))
 
 from config import ConfigManager
-from vector_store import VectorStore, create_vector_store_with_config
-
+from vector_store import create_vector_store_with_config
 
 logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',

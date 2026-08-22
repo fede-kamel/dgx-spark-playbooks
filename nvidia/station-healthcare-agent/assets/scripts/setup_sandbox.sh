@@ -157,7 +157,7 @@ fi
 # list`, find the line that mentions :$PORT, and stop the forward for
 # whichever sandbox owns it. Falls back to a broad sweep across all
 # listed sandbox names if the line format is unfamiliar.
-if openshell forward list 2>/dev/null | grep -q "[: ]$PORT[ \t]"; then
+if openshell forward list 2>/dev/null | grep -q "[: ]${PORT}[ \t]"; then
     echo "Cleaning up stale port forwards on :$PORT ..."
     # Capture every token on lines containing the port; the sandbox name
     # is whatever non-empty, non-numeric token follows the port column.
