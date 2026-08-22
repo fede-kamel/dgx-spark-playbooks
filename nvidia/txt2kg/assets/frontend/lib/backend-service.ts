@@ -551,11 +551,6 @@ export class BackendService {
     const topTriples = allTriples.slice(0, topK);
     console.log(`Using top ${topTriples.length} triples as context for LLM`);
 
-    // DEBUG: Log first triple to verify depth/pathLength are present
-    if (topTriples.length > 0) {
-      console.log('First triple structure:', JSON.stringify(topTriples[0], null, 2));
-    }
-    
     if (topTriples.length === 0) {
       return {
         answer: "I couldn't find any relevant information in the knowledge graph to answer this question.",
@@ -701,9 +696,6 @@ Answer:`;
         answer = `<think>\n${messageData.reasoning_content}\n</think>\n\n${answer}`;
         console.log('Formatted response with thinking content');
       }
-
-      // DEBUG: Log triples before returning to verify they still have depth/pathLength
-      console.log('Returning triples (first one):', JSON.stringify(topTriples[0], null, 2));
 
       return {
         answer,

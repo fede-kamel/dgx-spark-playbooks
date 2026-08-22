@@ -38,7 +38,10 @@ export async function POST(request: NextRequest) {
       await arangoService.clearDatabase();
     } else if (graphDbType === 'neo4j') {
       // TODO: Implement Neo4j clear functionality when needed
-      throw new Error('Clear database functionality not implemented for Neo4j');
+      return NextResponse.json(
+        { error: 'Clear database functionality not implemented for Neo4j' },
+        { status: 501 }
+      );
     }
     
     // Return success response
